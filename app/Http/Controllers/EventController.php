@@ -116,13 +116,19 @@ class EventController extends Controller
         try {
             // Check if user is authenticated
             if (!auth()->check()) {
-                return response()->json(['message' => 'Unauthenticated. Please log in to register.'], 401);
+                if ($request->wantsJson()) {
+                    return response()->json(['message' => 'Unauthenticated. Please log in to register.'], 401);
+                }
+                return redirect()->route('login');
             }
 
             $user = auth()->user();
 
             if ($user->role !== 'attendee') {
-                return response()->json(['message' => 'Only attendees can register for events'], 403);
+                if ($request->wantsJson()) {
+                    return response()->json(['message' => 'Only attendees can register for events'], 403);
+                }
+                return back()->with('error', 'Only attendees can register for events');
             }
 
             $exists = Registration::where('user_id', $user->id)
@@ -130,7 +136,10 @@ class EventController extends Controller
                 ->exists();
 
             if ($exists) {
-                return response()->json(['message' => 'Already registered'], 409);
+                if ($request->wantsJson()) {
+                    return response()->json(['message' => 'Already registered'], 409);
+                }
+                return back()->with('warning', 'You are already registered for this event');
             }
 
             $registration = Registration::create([
@@ -142,12 +151,18 @@ class EventController extends Controller
                 'event_title' => $event->title,
             ]);
 
-            return response()->json([
-                'message' => 'Successfully registered',
-                'registration' => $registration
-            ], 201);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Successfully registered',
+                    'registration' => $registration
+                ], 201);
+            }
+            return back()->with('success', 'Successfully registered for this event');
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Registration failed: ' . $e->getMessage()], 500);
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Registration failed: ' . $e->getMessage()], 500);
+            }
+            return back()->with('error', 'Registration failed: ' . $e->getMessage());
         }
     }
     

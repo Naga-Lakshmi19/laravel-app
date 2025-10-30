@@ -679,7 +679,7 @@
           // Get the CSRF token from meta tag
           const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
           
-          fetch(`/api/events/${eventId}/register`, {
+          fetch(`/events/${eventId}/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

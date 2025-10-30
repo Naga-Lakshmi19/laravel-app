@@ -41,6 +41,11 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/events/{event}', [\App\Http\Controllers\EventController::class, 'destroy'])->name('admin.events.destroy');
     });
 
+// Event registration web route (requires auth but not admin)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/events/{event}/register', [\App\Http\Controllers\EventController::class, 'register'])->name('events.register');
+});
+
 // Fallback route — redirects unknown routes to home page
 Route::fallback(function () {
     return redirect()->route('home');

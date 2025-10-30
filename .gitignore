@@ -8,32 +8,50 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Dependency & build directories
-node_modules/
-dist/
-dist-ssr/
+/node_modules/
+/vendor/
+/dist/
+/dist-ssr/
 
 # Laravel specific
-/vendor/
-public/hot
-public/storage
-storage/*.key
-.env
-.env.backup
+/public/hot
+/public/storage
+/storage/*.key
+/.env
+/.env.backup
 Homestead.yaml
 Homestead.json
-.phpunit.result.cache
-.phpunit.cache
+/.vagrant
 
-# IDE & Editor settings
-.vscode/*
+# Laravel caches
+bootstrap/cache/*.php
+
+# IDEs and editors
+/.idea
+/.vscode/*
 !.vscode/extensions.json
-.idea/
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.sublime-project
+*.sublime-workspace
 
-# Config folder cache
-.config/
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# Composer PHAR
+composer.phar
+
+# npm
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Testing
+.phpunit.result.cache
+.php_cs.cache
+
+# Misc
+.env.testing
+/.phpunit.cache
