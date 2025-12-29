@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         // Create admin user if it doesn't exist
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
@@ -22,5 +22,11 @@ class AdminUserSeeder extends Seeder
                 'role' => 'admin',
             ]
         );
+
+        // Ensure the user has the admin role
+        if ($user->role !== 'admin') {
+            $user->role = 'admin';
+            $user->save();
+        }
     }
 }
